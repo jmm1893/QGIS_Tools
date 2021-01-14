@@ -13,12 +13,20 @@ Braninstorm Ideas
   * save
   * loop 
   
+***********************************************************************************************************************  
+Plugin Code (save_attributes.py)
+    * added code to run(self) method
+      * fetch currently loaded layers
+      * clear the contents of the combobox from previous runs
+      * populate the comobobox with the selected layer
   
+***********************************************************************************************************************
   
-* QGIS Python console
-* https://www.qgistutorials.com/en/docs/3/building_a_python_plugin.html (Building a Python Plugin (QGIS3))
-  * Mac
-    * install homebrew by opening terminal to install pyqt
-     * Type: brew install pyqt
-     * you might get an error. make sure xcode is installed. open terminal. type: xcode-select --install
+Plugin UI
+    * Added select layer widget box and label
+    * Added select output file widget box and label
      
+***********************************************************************************************************************
+
+Resources
+* https://www.qgistutorials.com/en/docs/3/building_a_python_plugin.html (Building a Python Plugin (QGIS3))
