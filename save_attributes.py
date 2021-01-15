@@ -23,7 +23,8 @@
 """
 from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction
+from qgis.PyQt.QtWidgets import QAction, QFileDialog
+from qgis.core import QgsProject
 
 # Initialize Qt resources from file resources.py
 from .resources import *
@@ -178,6 +179,11 @@ class SaveAttributes:
                 self.tr(u'&SaveAttributes'),
                 action)
             self.iface.removeToolBarIcon(action)
+        
+    def select_output_file(self):
+        filename, _filter = QFileDialog.getSaveFileName(
+            self.dlg, "Select output file ","", '*.csv')
+        self.dlg.lineEdit.setText(filename)
 
 
     def run(self):
@@ -188,7 +194,15 @@ class SaveAttributes:
         if self.first_start == True:
             self.first_start = False
             self.dlg = SaveAttributesDialog()
+            self.dlg.pushButton.clicked.connect(self.select_output_file)
 
+        # Fetch the currently loaded layers
+        layers = QgsProject.instance().layerTreeRoot().children()
+        # Clear the contents of the comboBox from previous runs
+        self.dlg.comboBox.clear()
+        # Populate the comboBox with names of all the loaded layers
+        self.dlg.comboBox.addItems([layer.name() for layer in layers])
+        
         # show the dialog
         self.dlg.show()
         # Run the dialog event loop
