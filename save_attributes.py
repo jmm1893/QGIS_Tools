@@ -209,6 +209,18 @@ class SaveAttributes:
         result = self.dlg.exec_()
         # See if OK was pressed
         if result:
-            # Do something useful here - delete the line containing pass and
-            # substitute with your code.
-            pass
+            filename = self.dlg.lineEdit.text()
+        with open(filename, 'w') as output_file:
+          selectedLayerIndex = self.dlg.comboBox.currentIndex()
+          selectedLayer = layers[selectedLayerIndex].layer()
+          fieldnames = [field.name() for field in selectedLayer.fields()]
+          # write header
+          line = ','.join(name for name in fieldnames) + '\n'
+          output_file.write(line)
+          # wirte feature attributes
+          for f in selectedLayer.getFeatures():
+            line = ','.join(str(f[name]) for name in fieldnames) + '\n'
+            output_file.write(line)
+        self.iface.messageBar().pushMessage(
+          "Success", "Output file written at " + filename,
+          level=Qgis.Success, duration=3)
